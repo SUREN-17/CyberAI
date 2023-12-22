@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ChatBot Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        #chat-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #chat-box {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        #user-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+
+        #user-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        #user-input::placeholder {
+            color: #ccc;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <h1>ChatBot</h1>
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Ask something...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <!-- ... (Previous HTML code) ... -->
+
+<script>
+    function sendMessage() {
+        let userInput = document.getElementById('user-input').value;
+        appendMessage('You: ' + userInput);
+        document.getElementById('user-input').value = '';
+
+        fetch('/get_response', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: userInput })
+        })
+        .then(response => response.json())
+        .then(data => {
+            appendMessage('ChatBot: ' + data.response);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function appendMessage(message) {
+        let chatBox = document.getElementById('chat-box');
+        let messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
+    }
+</script>
+</body>
+</html>
