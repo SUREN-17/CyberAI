@@ -1,4 +1,4 @@
-openpyxl==3.0.14  # Use an appropriate version
+openpyxl==3.0.12  # Specify a compatible version
 Flask==2.0.1
-Werkzeug==2.0.2  # Ensure compatibility with Flask 2.0.1
+Werkzeug==2.0.2
 # Add other dependencies if needed
